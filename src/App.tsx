@@ -17,15 +17,26 @@ const App: React.FC = () => {
         const moves = chess.moves();
 
         if(moves.length > 0){
-          const computerMove = moves[Math.floor(Math.random() * moves.length)]
-          chess.move(computerMove);
-          setFen(chess.fen())
+          setFen(chess.fen());
         }
       }, 300);
 
-      setFen(chess.fen())
+      setFen(chess.fen());
+      alertGameState(chess);
     }
   }
+
+  const alertGameState = (chess: ChessInstance) => {
+    if(chess.in_checkmate()){
+      alert("Checkmate!");
+    } else if (chess.in_stalemate()){
+      alert("Stalemate!");
+    } else if (chess.in_threefold_repetition()){
+      alert("Draw! (3 fold repitition)");
+    } else if (chess.insufficient_material()){
+      alert("Draw! (insufficient material)");
+    }
+  } 
 
   return (
     <div className="flex-center">
