@@ -22,11 +22,11 @@ const App: React.FC = () => {
       }, 300);
 
       setFen(chess.fen());
-      alertGameState(chess);
+      alertGameState();
     }
   }
 
-  const alertGameState = (chess: ChessInstance) => {
+  const alertGameState = () => {
     if(chess.in_checkmate()){
       alert("Checkmate!");
     } else if (chess.in_stalemate()){
@@ -36,7 +36,12 @@ const App: React.FC = () => {
     } else if (chess.insufficient_material()){
       alert("Draw! (insufficient material)");
     }
-  } 
+  }
+  
+  const reset = () => {
+    chess.reset();
+    setFen(chess.fen())
+  }
 
   return (
     <div className="flex-center">
@@ -52,6 +57,7 @@ const App: React.FC = () => {
           })
       }
       />
+      <button onClick={() => reset()}>Reset the board</button>
     </div>
   )
 };
