@@ -45,9 +45,8 @@ const Game: React.FC = () => {
 
   return (
     <div>
-      <h1>Baxter Chess</h1>
       <Chessboard
-        width={400}
+        width={500}
         position= {fen}
         onDrop = { (move) => 
           handleMove({
