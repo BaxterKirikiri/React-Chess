@@ -4,7 +4,7 @@ import { AuthContext } from "../services/AuthContext";
 import { auth } from "../services/firebaseSetup";
 import Game from "./Game";
 
-const Menu: React.FC = () => {
+const Login: React.FC = () => {
   const user = useContext(AuthContext);
   
   const emailRef = useRef<HTMLInputElement>(null);
@@ -79,4 +79,4 @@ const Menu: React.FC = () => {
   )
 };
 
-export default Menu;
+export default Login;

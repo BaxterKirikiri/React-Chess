@@ -1,10 +1,10 @@
 import React from "react";
 import "./App.css";
-import Menu from "./screens/Menu";
+import Login from "./screens/Login";
 
 const App: React.FC = () => {
   return (
-    <Menu/>
+    <Login/>
   )
 };
 
