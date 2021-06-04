@@ -17,7 +17,7 @@ const Login: React.FC = () => {
         passwordRef.current!.value
       );
     } catch (error) {
-      alert("Please ensure email is correctly formatted password is at least 6 characters long"); //TODO: Make this alert more informative
+      alert("Please ensure email is correctly formatted and password is at least 6 characters long"); //TODO: Make this alert more informative
     }
   };
   
