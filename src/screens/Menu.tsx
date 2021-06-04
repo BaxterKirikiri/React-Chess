@@ -10,6 +10,7 @@ const Menu: React.FC = () => {
         setOnlinePlay(false);
     }
 
+    //TODO: Make these buttons look nicer
     if(isLocalPLay){
         return (
             <>
@@ -17,7 +18,7 @@ const Menu: React.FC = () => {
                 <button onClick={() => goBack()}>Back to Menu</button>
             </>
         )
-    } else if(isOnlinePlay){
+    } else if(isOnlinePlay){ //TODO: implement online play
         return(
             <>
                 <Game/>
@@ -26,11 +27,11 @@ const Menu: React.FC = () => {
         ) 
     }
 
-    return(
-        <>
-            <button onClick={() => setOnlinePlay(true)}>Play Online (not implemented)</button>
+    return(  //TODO: Make these buttons look nicer
+        <div className="flex-center">
+            <button onClick={() => setOnlinePlay(true)}>Play Online</button>
             <button onClick={() => setLocalPlay(true)}>Local Play</button>
-        </>
+        </div>
     )
 }
 

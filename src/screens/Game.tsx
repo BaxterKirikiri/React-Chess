@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./Game.css";
 import Chessboard from "chessboardjsx";
 import { ChessInstance, ShortMove } from "chess.js";
 const Chess = require("chess.js");
@@ -43,7 +42,7 @@ const Game: React.FC = () => {
     setFen(chess.fen())
   }
 
-  return (
+  return ( //TODO: Make the reset button look nicer
     <div>
       <Chessboard
         width={500}
