@@ -2,7 +2,7 @@ import React, { useContext, useRef } from "react";
 import { Button, Col, Container, Form, Navbar } from "react-bootstrap";
 import { AuthContext } from "../services/AuthContext";
 import { auth } from "../services/firebaseSetup";
-import Game from "./Game";
+import Menu from "./Menu";
 
 const Login: React.FC = () => {
   const user = useContext(AuthContext);
@@ -71,7 +71,7 @@ const Login: React.FC = () => {
       <>
         <h2 className="mt-4 text-center">Welcome {user.email}</h2>
         <Container style={{ maxWidth: "500px" }} fluid>
-          <Game/>
+          <Menu/>
         </Container>
       </>
     )}
