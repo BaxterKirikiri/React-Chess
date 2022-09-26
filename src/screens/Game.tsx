@@ -9,22 +9,21 @@ const Game: React.FC = () => {
   const [chess] = useState<ChessInstance>(
     new Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
   );
-
   const [fen, setFen] = useState(chess.fen());
+
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const observer = {
       next: (snapshot: any) => {
-        console.log(snapshot.data());
+        chess.load(snapshot.data());
+        setFen(chess.fen());
+        setLoaded(true);
       },
     };
     const unsubscribe = getGameStream(gameName, observer);
     return unsubscribe;
   }, []);
-
-  useEffect(() => {
-    updateGame(gameName, chess);
-  }, [fen, chess]);
 
   const handleMove = (move: ShortMove) => {
     if (chess.move(move)) {
@@ -37,6 +36,7 @@ const Game: React.FC = () => {
       }, 300);
 
       setFen(chess.fen());
+      updateGame(gameName, chess);
       alertGameState();
     }
   };
@@ -56,25 +56,34 @@ const Game: React.FC = () => {
   const reset = () => {
     chess.reset();
     setFen(chess.fen());
+    updateGame(gameName, chess);
   };
 
-  return (
-    //TODO: Make the reset button look nicer
-    <div>
-      <Chessboard
-        width={500}
-        position={fen}
-        onDrop={(move) =>
-          handleMove({
-            from: move.sourceSquare,
-            to: move.targetSquare,
-            promotion: "q",
-          })
-        }
-      />
-      <button onClick={() => reset()}>Reset the board</button>
-    </div>
-  );
+  if (loaded) {
+    return (
+      //TODO: Make the reset button look nicer
+      <div>
+        <Chessboard
+          width={500}
+          position={fen}
+          onDrop={(move) =>
+            handleMove({
+              from: move.sourceSquare,
+              to: move.targetSquare,
+              promotion: "q",
+            })
+          }
+        />
+        <button onClick={() => reset()}>Reset the board</button>
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <h1>Loading...</h1>
+      </div>
+    );
+  }
 };
 
 export default Game;

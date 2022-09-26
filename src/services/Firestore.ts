@@ -12,7 +12,7 @@ const chessConverter = {
     },
     fromFirestore: (snapshot: { data: (arg0: any) => any; }, options: any) => {
         const data = snapshot.data(options);
-        return new Chess(data.board);
+        return data.Board;
     } 
 }
 
