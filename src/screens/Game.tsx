@@ -2,22 +2,24 @@ import React, { useEffect, useState } from "react";
 import Chessboard from "chessboardjsx";
 import { ChessInstance, ShortMove } from "chess.js";
 import { getGameStream, updateGame } from "../services/Firestore";
+import FirestoreChess from "../interfaces/firestoreChess";
 const Chess = require("chess.js");
 const gameName = "Game1";
 
 const Game: React.FC = () => {
-  const [chess] = useState<ChessInstance>(
+  const [chessEngine] = useState<ChessInstance>(
     new Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
   );
-  const [fen, setFen] = useState(chess.fen());
-
+  const [chessData, setChessData] = useState<FirestoreChess>(
+    new FirestoreChess("", "black", "white")
+  );
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const observer = {
       next: (snapshot: any) => {
-        chess.load(snapshot.data());
-        setFen(chess.fen());
+        setChessData(snapshot.data());
+        chessEngine.load(chessData.getFen());
         setLoaded(true);
       },
     };
@@ -26,37 +28,37 @@ const Game: React.FC = () => {
   }, []);
 
   const handleMove = (move: ShortMove) => {
-    if (chess.move(move)) {
+    if (chessEngine.move(move)) {
       setTimeout(() => {
-        const moves = chess.moves();
+        const moves = chessEngine.moves();
 
         if (moves.length > 0) {
-          setFen(chess.fen());
+          chessData.updateFen(chessEngine.fen());
         }
       }, 300);
 
-      setFen(chess.fen());
-      updateGame(gameName, chess);
+      chessData.updateFen(chessEngine.fen());
+      updateGame(gameName, chessData);
       alertGameState();
     }
   };
 
   const alertGameState = () => {
-    if (chess.in_checkmate()) {
+    if (chessEngine.in_checkmate()) {
       alert("Checkmate!");
-    } else if (chess.in_stalemate()) {
+    } else if (chessEngine.in_stalemate()) {
       alert("Stalemate!");
-    } else if (chess.in_threefold_repetition()) {
+    } else if (chessEngine.in_threefold_repetition()) {
       alert("Draw! (3 fold repitition)");
-    } else if (chess.insufficient_material()) {
+    } else if (chessEngine.insufficient_material()) {
       alert("Draw! (insufficient material)");
     }
   };
 
   const reset = () => {
-    chess.reset();
-    setFen(chess.fen());
-    updateGame(gameName, chess);
+    chessEngine.reset();
+    chessData.updateFen(chessEngine.fen());
+    updateGame(gameName, chessData);
   };
 
   if (loaded) {
@@ -65,7 +67,7 @@ const Game: React.FC = () => {
       <div>
         <Chessboard
           width={500}
-          position={fen}
+          position={chessData.FEN}
           onDrop={(move) =>
             handleMove({
               from: move.sourceSquare,

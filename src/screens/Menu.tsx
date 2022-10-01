@@ -1,38 +1,40 @@
-import React, {useState} from "react";
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../services/AuthContext";
 import Game from "./Game";
 
 const Menu: React.FC = () => {
-    const [isLocalPLay, setLocalPlay] = useState(false);
-    const [isOnlinePlay, setOnlinePlay] = useState(false);
+  const user = useContext(AuthContext);
 
-    function goBack() {
-        setLocalPlay(false);
-        setOnlinePlay(false);
-    }
+  const testGameArray = [
+    { name: "Game 1", ID: "Game1" },
+    { name: "Game 2", ID: "Game1" },
+  ];
 
+  const [inGame, setInGame] = useState(false);
+
+  function goBack() {
+    setInGame(false);
+  }
+
+  //TODO: Make these buttons look nicer
+  if (inGame) {
+    return (
+      <>
+        <Game />
+        <button onClick={() => goBack()}>Back to Menu</button>
+      </>
+    );
+  }
+
+  return (
     //TODO: Make these buttons look nicer
-    if(isLocalPLay){
-        return (
-            <>
-                <Game/>
-                <button onClick={() => goBack()}>Back to Menu</button>
-            </>
-        )
-    } else if(isOnlinePlay){ //TODO: implement online play
-        return(
-            <>
-                <Game/>
-                <button onClick={() => goBack()}>Back to Menu</button>
-            </>
-        ) 
-    }
-
-    return(  //TODO: Make these buttons look nicer
-        <div className="flex-center">
-            <button onClick={() => setOnlinePlay(true)}>Play Online</button>
-            <button onClick={() => setLocalPlay(true)}>Local Play</button>
-        </div>
-    )
-}
+    <div className="flex-center">
+      <h1>Games</h1>
+      {testGameArray.map(({ name, ID }) => (
+        <button onClick={() => setInGame(true)}>{name}</button>
+      ))}
+    </div>
+  );
+};
 
 export default Menu;
