@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Button } from "react-bootstrap";
 import { getUserGameListStream } from "../services/Firestore";
 import { gameListInstance } from "../services/gameListInstance";
 import CreateGame from "./CreateGame";
@@ -54,7 +55,9 @@ const Menu: React.FC<{ uid: string }> = ({ uid }) => {
     return (
       <>
         <Game gameID={selectedGameID} player={uid} />
-        <button onClick={backToMenu}>Back to Menu</button>
+        <Button onClick={backToMenu} variant="secondary">
+          Back to Menu
+        </Button>
       </>
     );
   }
@@ -62,8 +65,10 @@ const Menu: React.FC<{ uid: string }> = ({ uid }) => {
   if (creatingNewGame) {
     return (
       <div>
-        <CreateGame />
-        <button onClick={backToMenu}>Back to Menu</button>
+        <CreateGame challenger={uid} />
+        <Button onClick={backToMenu} variant="secondary">
+          Back to Menu
+        </Button>
       </div>
     );
   }
@@ -73,11 +78,11 @@ const Menu: React.FC<{ uid: string }> = ({ uid }) => {
       <div className="flex-center">
         <h1>Games</h1>
         {gameList.map((instance: gameListInstance) => (
-          <button onClick={() => enterGame(instance.gid)}>
+          <Button onClick={() => enterGame(instance.gid)} variant="secondary">
             {instance.name}
-          </button>
+          </Button>
         ))}
-        <button onClick={createNewGame}>New Game</button>
+        <Button onClick={createNewGame}>New Game</Button>
       </div>
     );
   } else {

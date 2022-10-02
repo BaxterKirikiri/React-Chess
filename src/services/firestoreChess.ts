@@ -8,10 +8,17 @@ class FirestoreChess{
 
     constructor(fen: string, playerBlack: string, playerWhite: string){
         this.FEN = fen;
+        this.newGame();
         this.Black = playerBlack;
         this.White = playerWhite;
     }
 
+    newGame(){
+        if(this.FEN == "new"){
+            this.FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+        }
+    }
+  
     updateFen(fen: string){
         this.FEN = fen;
     }

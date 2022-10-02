@@ -3,6 +3,7 @@ import Chessboard from "chessboardjsx";
 import { ChessInstance, ShortMove } from "chess.js";
 import { getGameStream, updateGame } from "../services/Firestore";
 import FirestoreChess from "../services/firestoreChess";
+import { Button } from "react-bootstrap";
 const Chess = require("chess.js");
 
 const Game: React.FC<{ gameID: string; player: string }> = ({
@@ -16,7 +17,7 @@ const Game: React.FC<{ gameID: string; player: string }> = ({
     new Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
   );
   const [chessData, setChessData] = useState<FirestoreChess>(
-    new FirestoreChess("", "black", "white")
+    new FirestoreChess("new", "black", "white")
   );
   const [loaded, setLoaded] = useState(false);
 
@@ -98,7 +99,7 @@ const Game: React.FC<{ gameID: string; player: string }> = ({
             })
           }
         />
-        <button onClick={() => reset()}>Reset the board</button>
+        <Button onClick={() => reset()}>Reset the board</Button>
       </div>
     );
   } else {
