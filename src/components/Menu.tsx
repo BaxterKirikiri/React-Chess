@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getUserGameListStream } from "../services/Firestore";
 import { gameListInstance } from "../services/gameListInstance";
+import CreateGame from "./CreateGame";
 import Game from "./Game";
 
 //TODO: Make the buttons look nicer
@@ -31,15 +32,20 @@ const Menu: React.FC<{ uid: string }> = ({ uid }) => {
   /************************************
             State swithcing
   *************************************/
-  function enterGame(gid: string) {
+  const enterGame = (gid: string) => {
     setSelectedGameID(gid);
     setInGame(true);
-  }
+  };
 
-  function backToMenu() {
+  const createNewGame = () => {
+    setCreatingNewGame(true);
+  };
+
+  const backToMenu = () => {
     setInGame(false);
+    setCreatingNewGame(false);
     setSelectedGameID("");
-  }
+  };
 
   /************************************
           Conditional Rendering
@@ -48,8 +54,17 @@ const Menu: React.FC<{ uid: string }> = ({ uid }) => {
     return (
       <>
         <Game gameID={selectedGameID} player={uid} />
-        <button onClick={() => backToMenu()}>Back to Menu</button>
+        <button onClick={backToMenu}>Back to Menu</button>
       </>
+    );
+  }
+
+  if (creatingNewGame) {
+    return (
+      <div>
+        <CreateGame />
+        <button onClick={backToMenu}>Back to Menu</button>
+      </div>
     );
   }
 
@@ -62,7 +77,7 @@ const Menu: React.FC<{ uid: string }> = ({ uid }) => {
             {instance.name}
           </button>
         ))}
-        <button>New Game</button>
+        <button onClick={createNewGame}>New Game</button>
       </div>
     );
   } else {
