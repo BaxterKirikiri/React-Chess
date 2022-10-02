@@ -34,11 +34,9 @@ const Menu: React.FC<{ uid: string }> = ({ uid }) => {
 
   //TODO: Make these buttons look nicer
   if (inGame) {
-    console.log(gameList);
-    console.log(selectedGameID);
     return (
       <>
-        <Game gameID={selectedGameID} />
+        <Game gameID={selectedGameID} player={uid} />
         <button onClick={() => goBack()}>Back to Menu</button>
       </>
     );

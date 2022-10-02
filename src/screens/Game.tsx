@@ -5,7 +5,10 @@ import { getGameStream, updateGame } from "../services/Firestore";
 import FirestoreChess from "../services/firestoreChess";
 const Chess = require("chess.js");
 
-const Game: React.FC<{ gameID: string }> = ({ gameID }) => {
+const Game: React.FC<{ gameID: string; player: string }> = ({
+  gameID,
+  player,
+}) => {
   const [chessEngine] = useState<ChessInstance>(
     new Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
   );
@@ -26,8 +29,19 @@ const Game: React.FC<{ gameID: string }> = ({ gameID }) => {
     return unsubscribe;
   }, [chessData, chessEngine, gameID]);
 
+  const isPlayersTurn = () => {
+    const turn = chessEngine.turn();
+    if (turn == "b" && chessData.Black == player) {
+      return true;
+    } else if (turn == "w" && chessData.White == player) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const handleMove = (move: ShortMove) => {
-    if (chessEngine.move(move)) {
+    if (chessEngine.move(move) && isPlayersTurn()) {
       setTimeout(() => {
         const moves = chessEngine.moves();
 
