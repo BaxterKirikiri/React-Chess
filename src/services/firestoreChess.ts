@@ -1,3 +1,6 @@
+/**
+ * Class to mimic the object structure for each game in Firestore, so that data is easier to pass around
+ */
 class FirestoreChess{
     FEN: string;
     Black: string;
@@ -7,18 +10,6 @@ class FirestoreChess{
         this.FEN = fen;
         this.Black = playerBlack;
         this.White = playerWhite;
-    }
-
-    getFen(){
-        return this.FEN;
-    }
-
-    getBlack(){
-        return this.Black;
-    }
-
-    getWhite(){
-        return this.White;
     }
 
     updateFen(fen: string){

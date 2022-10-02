@@ -9,6 +9,9 @@ const Game: React.FC<{ gameID: string; player: string }> = ({
   gameID,
   player,
 }) => {
+  /************************************
+          State Initialization
+  *************************************/
   const [chessEngine] = useState<ChessInstance>(
     new Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
   );
@@ -21,7 +24,7 @@ const Game: React.FC<{ gameID: string; player: string }> = ({
     const observer = {
       next: (snapshot: any) => {
         setChessData(snapshot.data());
-        chessEngine.load(chessData.getFen());
+        chessEngine.load(chessData.FEN);
         setLoaded(true);
       },
     };
@@ -29,6 +32,9 @@ const Game: React.FC<{ gameID: string; player: string }> = ({
     return unsubscribe;
   }, [chessData, chessEngine, gameID]);
 
+  /************************************
+    ChessEngine based state switching 
+  *************************************/
   const isPlayersTurn = () => {
     const turn = chessEngine.turn();
     if (turn == "b" && chessData.Black == player) {
@@ -74,6 +80,9 @@ const Game: React.FC<{ gameID: string; player: string }> = ({
     updateGame(gameID, chessData);
   };
 
+  /************************************
+          Conditional Rendering
+  *************************************/
   if (loaded) {
     return (
       //TODO: Make the reset button look nicer

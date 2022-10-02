@@ -6,7 +6,6 @@ import Menu from "./Menu";
 
 const Login: React.FC = () => {
   const user = useContext(AuthContext);
-
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 

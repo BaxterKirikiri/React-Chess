@@ -3,8 +3,14 @@ import { getUserGameListStream } from "../services/Firestore";
 import { gameListInstance } from "../services/gameListInstance";
 import Game from "./Game";
 
+//TODO: Make the buttons look nicer
+
 const Menu: React.FC<{ uid: string }> = ({ uid }) => {
+  /************************************
+          State Initialization
+  *************************************/
   const [inGame, setInGame] = useState(false);
+  const [creatingNewGame, setCreatingNewGame] = useState(false);
   const [gameList] = useState<gameListInstance[]>([]);
   const [gamesLoaded, setGamesLoaded] = useState(false);
   const [selectedGameID, setSelectedGameID] = useState("");
@@ -22,29 +28,33 @@ const Menu: React.FC<{ uid: string }> = ({ uid }) => {
     return unsubscribe;
   }, [uid, gameList]);
 
+  /************************************
+            State swithcing
+  *************************************/
   function enterGame(gid: string) {
     setSelectedGameID(gid);
     setInGame(true);
   }
 
-  function goBack() {
+  function backToMenu() {
     setInGame(false);
     setSelectedGameID("");
   }
 
-  //TODO: Make these buttons look nicer
+  /************************************
+          Conditional Rendering
+  *************************************/
   if (inGame) {
     return (
       <>
         <Game gameID={selectedGameID} player={uid} />
-        <button onClick={() => goBack()}>Back to Menu</button>
+        <button onClick={() => backToMenu()}>Back to Menu</button>
       </>
     );
   }
 
   if (gamesLoaded) {
     return (
-      //TODO: Make these buttons look nicer
       <div className="flex-center">
         <h1>Games</h1>
         {gameList.map((instance: gameListInstance) => (
@@ -52,12 +62,13 @@ const Menu: React.FC<{ uid: string }> = ({ uid }) => {
             {instance.name}
           </button>
         ))}
+        <button>New Game</button>
       </div>
     );
   } else {
     return (
       <div>
-        <h2>Loading...</h2>
+        <h2>Loading existing games...</h2>
       </div>
     );
   }
