@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import Chessboard from "chessboardjsx";
 import { ChessInstance, ShortMove } from "chess.js";
 import { getGameStream, updateGame } from "../services/Firestore";
-import FirestoreChess from "../interfaces/firestoreChess";
+import FirestoreChess from "../services/firestoreChess";
 const Chess = require("chess.js");
-const gameName = "Game1";
 
-const Game: React.FC = () => {
+const Game: React.FC<{ gameID: string }> = ({ gameID }) => {
   const [chessEngine] = useState<ChessInstance>(
     new Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
   );
@@ -23,9 +22,9 @@ const Game: React.FC = () => {
         setLoaded(true);
       },
     };
-    const unsubscribe = getGameStream(gameName, observer);
+    const unsubscribe = getGameStream(gameID, observer);
     return unsubscribe;
-  }, []);
+  }, [chessData, chessEngine, gameID]);
 
   const handleMove = (move: ShortMove) => {
     if (chessEngine.move(move)) {
@@ -38,7 +37,7 @@ const Game: React.FC = () => {
       }, 300);
 
       chessData.updateFen(chessEngine.fen());
-      updateGame(gameName, chessData);
+      updateGame(gameID, chessData);
       alertGameState();
     }
   };
@@ -58,7 +57,7 @@ const Game: React.FC = () => {
   const reset = () => {
     chessEngine.reset();
     chessData.updateFen(chessEngine.fen());
-    updateGame(gameName, chessData);
+    updateGame(gameID, chessData);
   };
 
   if (loaded) {
