@@ -1,28 +1,32 @@
 import { useRef } from "react";
 import { Button, Col, Container, Form } from "react-bootstrap";
-import FirestoreChess from "../services/firestoreChess";
+import { createGame } from "../services/Firestore";
 
-const CreateGame: React.FC<{ challenger: string }> = ({
-  challenger: string,
+const CreateGame: React.FC<{ challenger: string; callback: Function }> = ({
+  challenger,
+  callback,
 }) => {
-  const opponentEmailRef = useRef<HTMLInputElement>(null);
+  const opponentRef = useRef<HTMLInputElement>(null);
 
   const challengeOpponent = () => {
-    console.log(opponentEmailRef.current!.value);
+    const opponent = opponentRef.current!.value;
+    createGame(challenger, opponent);
+    callback();
   };
 
   return (
     <div>
       <Container style={{ maxWidth: "500px" }} fluid>
         <Form className="mt-4">
-          <Form.Group controlId="formEmail">
-            <Form.Label>Opponent Email</Form.Label>
+          <Form.Group>
+            <Form.Label>Opponent ID</Form.Label>
             <Form.Control
-              ref={opponentEmailRef}
-              type="email"
-              placeholder="email"
+              ref={opponentRef}
+              type="String"
+              placeholder="Opponent ID"
             />
           </Form.Group>
+          <p>My ID: {challenger}</p>
           <br />
           <Form.Row>
             <Col xs={6}>

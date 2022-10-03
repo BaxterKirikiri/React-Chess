@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { getUserGameListStream } from "../services/Firestore";
-import { gameListInstance } from "../services/gameListInstance";
 import CreateGame from "./CreateGame";
 import Game from "./Game";
 
@@ -11,17 +10,20 @@ const Menu: React.FC<{ uid: string }> = ({ uid }) => {
   /************************************
           State Initialization
   *************************************/
+  //View management
   const [inGame, setInGame] = useState(false);
   const [creatingNewGame, setCreatingNewGame] = useState(false);
-  const [gameList] = useState<gameListInstance[]>([]);
   const [gamesLoaded, setGamesLoaded] = useState(false);
+
+  //Game data
+  const [gameList] = useState<string[]>([]);
   const [selectedGameID, setSelectedGameID] = useState("");
 
   useEffect(() => {
     const observer = {
       next: (snapshot: any) => {
         snapshot.data().forEach((ID: string) => {
-          gameList.push(new gameListInstance(ID, ID));
+          gameList.push(ID);
         });
         setGamesLoaded(true);
       },
@@ -38,7 +40,7 @@ const Menu: React.FC<{ uid: string }> = ({ uid }) => {
     setInGame(true);
   };
 
-  const createNewGame = () => {
+  const goToCreateNewGame = () => {
     setCreatingNewGame(true);
   };
 
@@ -65,7 +67,7 @@ const Menu: React.FC<{ uid: string }> = ({ uid }) => {
   if (creatingNewGame) {
     return (
       <div>
-        <CreateGame challenger={uid} />
+        <CreateGame challenger={uid} callback={backToMenu} />
         <Button onClick={backToMenu} variant="secondary">
           Back to Menu
         </Button>
@@ -77,12 +79,12 @@ const Menu: React.FC<{ uid: string }> = ({ uid }) => {
     return (
       <div className="flex-center">
         <h1>Games</h1>
-        {gameList.map((instance: gameListInstance) => (
-          <Button onClick={() => enterGame(instance.gid)} variant="secondary">
-            {instance.name}
+        {gameList.map((gid: string) => (
+          <Button onClick={() => enterGame(gid)} variant="secondary">
+            {gid}
           </Button>
         ))}
-        <Button onClick={createNewGame}>New Game</Button>
+        <Button onClick={goToCreateNewGame}>New Game</Button>
       </div>
     );
   } else {
