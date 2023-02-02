@@ -33,6 +33,7 @@ const Game: React.FC<{ gameID: string; player: string }> = ({
     return unsubscribe;
   }, [chessData, chessEngine, gameID]);
 
+  const renderHistory = chessData.History.map((number) => <div>{number}</div>)
   /************************************
     ChessEngine based state switching 
   *************************************/
@@ -103,6 +104,7 @@ const Game: React.FC<{ gameID: string; player: string }> = ({
             })
           }
         />
+        {renderHistory}
         <Button onClick={() => reset()}>Reset the board</Button>
       </div>
     );
