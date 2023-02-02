@@ -89,7 +89,8 @@ const Game: React.FC<{ gameID: string; player: string }> = ({
   *************************************/
   if (loaded) {
     return (
-      //TODO: Make the reset button look nicer
+      //TODO: Make the reset button look nicer 
+      //Reset button: <Button onClick={() => reset()}>Reset the board</Button>
       <div>
         <h1>{gameID}</h1>
         <Chessboard
@@ -105,7 +106,6 @@ const Game: React.FC<{ gameID: string; player: string }> = ({
           }
         />
         {renderHistory}
-        <Button onClick={() => reset()}>Reset the board</Button>
       </div>
     );
   } else {
