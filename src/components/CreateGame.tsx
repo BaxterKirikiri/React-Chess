@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button, Col, Container, Form } from "react-bootstrap";
 import { createGame } from "../services/Firestore";
 
@@ -7,11 +7,17 @@ const CreateGame: React.FC<{ challenger: string; callback: Function }> = ({
   callback,
 }) => {
   const opponentRef = useRef<HTMLInputElement>(null);
-
+  const [err, setErr] = useState(false);
+  
   const challengeOpponent = () => {
     const opponent = opponentRef.current!.value;
-    createGame(challenger, opponent);
-    callback();
+    if(opponent != challenger){
+      setErr(false);
+      createGame(challenger, opponent);
+      callback();
+    } else {
+      setErr(true);
+    }
   };
 
   return (
@@ -26,6 +32,7 @@ const CreateGame: React.FC<{ challenger: string; callback: Function }> = ({
               placeholder="Opponent ID"
             />
           </Form.Group>
+          <p>{err?"Please enter an ID that isn't your own":""}</p>
           <p>My ID: {challenger}</p>
           <br />
           <Form.Row>
