@@ -15,7 +15,7 @@ const chessConverter = {
     },
     fromFirestore: (snapshot: { data: (arg0: any) => any; }, options: any) => {
         const data = snapshot.data(options);
-        return new FirestoreChess(data.FEN, data.Black, data.White);
+        return new FirestoreChess(data.FEN, data.Black, data.White, data.History);
     } 
 }
 
@@ -59,7 +59,7 @@ export const addGameToUserList = (userID: string, newGame: string) => {
 *************************************/
 export const createGame = (challenger: string, opponent:string) => {
     const newGameID = uuidv4();
-    const newGame = new FirestoreChess("new", opponent, challenger);
+    const newGame = new FirestoreChess("new", opponent, challenger, []);
 
     updateGame(newGameID, newGame);
     addGameToUserList(challenger, newGameID);

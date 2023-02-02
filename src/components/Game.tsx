@@ -17,7 +17,7 @@ const Game: React.FC<{ gameID: string; player: string }> = ({
     new Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
   );
   const [chessData, setChessData] = useState<FirestoreChess>(
-    new FirestoreChess("new", "black", "white")
+    new FirestoreChess("new", "black", "white", [])
   );
   const [loaded, setLoaded] = useState(false);
 
@@ -58,6 +58,7 @@ const Game: React.FC<{ gameID: string; player: string }> = ({
       }, 300);
 
       chessData.updateFen(chessEngine.fen());
+      chessData.updateHistory(chessEngine.history()[0]);
       updateGame(gameID, chessData);
       alertGameState();
     }
@@ -78,6 +79,7 @@ const Game: React.FC<{ gameID: string; player: string }> = ({
   const reset = () => {
     chessEngine.reset();
     chessData.updateFen(chessEngine.fen());
+    chessData.resetHistory()
     updateGame(gameID, chessData);
   };
 
@@ -88,6 +90,7 @@ const Game: React.FC<{ gameID: string; player: string }> = ({
     return (
       //TODO: Make the reset button look nicer
       <div>
+        <h1>{gameID}</h1>
         <Chessboard
           width={500}
           position={chessData.FEN}

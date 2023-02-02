@@ -5,12 +5,14 @@ class FirestoreChess{
     FEN: string;
     Black: string;
     White: string;
+    History: string[];
 
-    constructor(fen: string, playerBlack: string, playerWhite: string){
+    constructor(fen: string, playerBlack: string, playerWhite: string, history: string[]){
         this.FEN = fen;
         this.newGame();
         this.Black = playerBlack;
         this.White = playerWhite;
+        this.History = history;
     }
 
     newGame(){
@@ -23,11 +25,20 @@ class FirestoreChess{
         this.FEN = fen;
     }
 
+    updateHistory(move: string){
+        this.History.push(move);
+    }
+
+    resetHistory(){
+        this.History = [];
+    }
+
     getJSON() {
         return {
             FEN: this.FEN,
             Black: this.Black,
-            White: this.White
+            White: this.White,
+            History: this.History
         };
     }
 }
