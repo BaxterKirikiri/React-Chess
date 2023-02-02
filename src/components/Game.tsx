@@ -91,6 +91,7 @@ const Game: React.FC<{ gameID: string; player: string }> = ({
         <Chessboard
           width={500}
           position={chessData.FEN}
+          orientation = {chessData.Black == player?'white':'black'}
           onDrop={(move) =>
             handleMove({
               from: move.sourceSquare,
