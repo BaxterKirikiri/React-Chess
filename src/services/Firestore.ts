@@ -48,6 +48,13 @@ export const getUserGameListStream = (userID: string, observer: any) => {
 export const getUserGameList = (userID: string) => {
     return db.collection(listCollection).withConverter(userConverter).doc(userID).get();
 }
+
+export const addUserGameList = (userID: string) => {
+    return db.collection(listCollection).doc(userID).set({
+       Games: [] 
+    })
+}
+
 export const addGameToUserList = (userID: string, newGame: string) => {
     return db.collection(listCollection).doc(userID).update({
         Games: firebase.firestore.FieldValue.arrayUnion(newGame)

@@ -2,6 +2,7 @@ import React, { useContext, useRef } from "react";
 import { Button, Col, Container, Form, Navbar } from "react-bootstrap";
 import { AuthContext } from "../services/AuthContext";
 import { auth } from "../services/firebaseSetup";
+import { addUserGameList } from "../services/Firestore";
 import Menu from "./Menu";
 
 const Login: React.FC = () => {
@@ -15,6 +16,10 @@ const Login: React.FC = () => {
         emailRef.current!.value,
         passwordRef.current!.value
       );
+      const userID = auth.currentUser?.uid;
+      if(userID) {
+        addUserGameList(userID);
+      }
     } catch (error) {
       alert(
         "Please ensure email is correctly formatted and password is at least 6 characters long"
